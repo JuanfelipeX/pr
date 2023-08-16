@@ -1,55 +1,62 @@
 import React, { useState } from 'react';
+import Boton from "../components/Boton"; 
+import PanelDeBotones from "../components/PanelDeBotones"; 
 
-const Calculator = () => {
+
+const Calculadora = () => {
+  // Estados para el input y el resultado
   const [input, setInput] = useState("");
   const [result, setResult] = useState(0);
 
+  // Maneja el evento de presionar un botón
   const handleButtonPress = (value) => {
-    setInput(prevInput => prevInput + value);
+    if (value === "AC") {
+      setInput(""); // Borra el input si el valor es "AC"
+    } else {
+      setInput(prevInput => prevInput + value);
+    }
   };
 
-  const handleClear = () => {
-    setInput("");
-    setResult(0);
-  };
-
+  // Realiza el cálculo cuando se presiona el botón de igual (=)
   const handleCalculate = () => {
     try {
-      setResult(eval(input));
+      setResult(eval(input)); // Evalúa la expresión ingresada y actualiza el resultado
     } catch (error) {
       setResult("Error");
     }
   };
 
+  // Maneja el evento de presionar un botón (incluyendo los casos especiales)
+  const handleButtonClick = (value) => {
+    switch (value) {
+      case "=":
+        handleCalculate(); 
+        break;
+      case "%":
+        setInput(prevInput => String(eval(prevInput) / 100)); // Calcula el porcentaje
+        break;
+      default:
+        handleButtonPress(value); 
+        break;
+    }
+  };
+
   return (
-    <div className="calculator mt-4">
-      <input className="form-control mb-3" type="text" value={input} readOnly />
-      <div className="grid-container">
-        <button className="btn btn-outline-danger" onClick={handleClear}>C</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress("(")}>(</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress(")")}>)</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress("/")}>/</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("7")}>7</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("8")}>8</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("9")}>9</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress("*")}>*</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("4")}>4</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("5")}>5</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("6")}>6</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress("-")}>-</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("1")}>1</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("2")}>2</button>
-        <button className="btn btn-outline-primary" onClick={() => handleButtonPress("3")}>3</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress("+")}>+</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress("0")}>0</button>
-        <button className="btn btn-outline-secondary" onClick={() => handleButtonPress(".")}>.</button>
-        <button className="btn btn-outline-success" onClick={handleCalculate}>=</button>
-      </div>
-      <div className="result text-center mt-3">
-        <p>Resultado: {result}</p>
+    <div className="calculator mt-4 container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          {/* Muestra el input */}
+          <input className="form-control mb-3" type="text" value={input} readOnly />
+          {/* Renderiza el componente PanelDeBotones y pasa la función handleButtonClick como prop */}
+          <PanelDeBotones clickHandle={handleButtonClick} />
+          {/* Muestra el resultado */}
+          <div className="result text-center mt-3">
+            <p>Resultado: {result}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default Calculator;
+export default Calculadora;

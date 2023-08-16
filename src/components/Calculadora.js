@@ -12,6 +12,7 @@ const Calculadora = () => {
   const handleButtonPress = (value) => {
     if (value === "AC") {
       setInput(""); // Borra el input si el valor es "AC"
+      setResult(0);
     } else {
       setInput(prevInput => prevInput + value);
     }

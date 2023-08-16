@@ -1,4 +1,3 @@
-
 import React from "react";
 
 const Boton = ({ clickHandle, name, gray, primary, success, danger }) => {
@@ -7,6 +6,7 @@ const Boton = ({ clickHandle, name, gray, primary, success, danger }) => {
   // Define las clases de los botones basadas en las propiedades recibidas
   const classNames = [
     "btn",
+    "btn-block", // Agrega esta clase para establecer el mismo ancho
     gray ? "btn-secondary" : "",
     primary ? "btn-primary" : "",
     success ? "btn-success" : "",
